@@ -9,20 +9,23 @@ namespace River
     class River
     {
 
-        Random random = new Random();
-
         public List<Pike> listOfPikes = new List<Pike>();
         public List<Rudd> listOfRudds = new List<Rudd>();
         public List<Pike> ToDelListOfPikes = new List<Pike>();
         public List<Rudd> ToDelListOfRudds = new List<Rudd>();
         public List<Rudd> ToAddListOfRudds = new List<Rudd>();
 
+        private Random Random = new Random();
+        private int riverSize = 30;
+        int maxSpeedOfPike = 5;
+        int maxSpeedOfRudd = 2;
+
         public void CreateFishs()
         {
             for (int i = 0; i < 10; i++)
             {
-                listOfPikes.Add(new Pike(random));
-                listOfRudds.Add(new Rudd(random));
+                listOfPikes.Add(new Pike());
+                listOfRudds.Add(new Rudd());
             }
         }
 
@@ -30,7 +33,7 @@ namespace River
         {
         foreach (Pike pike in listOfPikes)
             {
-                pike.StartCoordinates(random);
+                pike.StartCoordinates();
                 pike.Size = 1;
             }
         }
@@ -39,7 +42,7 @@ namespace River
         {
             foreach (Rudd rudd in listOfRudds)
             {
-                rudd.StartCoordinates(random);
+                rudd.StartCoordinates();
             }
         }
 
@@ -47,25 +50,25 @@ namespace River
         {
             foreach (Pike pike in listOfPikes)
             {
-                if (((pike.X <= 94) && (pike.X >= 6) &&
-                     (pike.Y <= 94) && (pike.Y >= 6) &&
-                     (pike.Z <= 94) && (pike.Z >= 6)))
+                if (((pike.X <= (riverSize - maxSpeedOfPike)) && (pike.X >= maxSpeedOfPike) &&
+                     (pike.Y <= (riverSize - maxSpeedOfPike)) && (pike.Y >= maxSpeedOfPike) &&
+                     (pike.Z <= (riverSize - maxSpeedOfPike)) && (pike.Z >= maxSpeedOfPike)))
                 {
-                    pike.ChangeCoordinates(random);
+                    pike.ChangeCoordinates();
                 }
                 else
                 {
-                    if (((pike.X >= 94) || 
-                     (pike.Y >= 94) ||
-                     (pike.Z >= 94)))
+                    if (((pike.X >= (riverSize - maxSpeedOfPike)) || 
+                     (pike.Y >= (riverSize - maxSpeedOfPike)) ||
+                     (pike.Z >= (riverSize - maxSpeedOfPike))))
                     {
                         pike.X -= 1;
                         pike.Y -= 1;
                         pike.Z -= 1;
                     }
-                    if (((pike.X <= 6) ||
-                     (pike.Y <= 6) ||
-                     (pike.Z <= 6)))
+                    if (((pike.X <= maxSpeedOfPike) ||
+                     (pike.Y <= maxSpeedOfPike) ||
+                     (pike.Z <= maxSpeedOfPike)))
                     {
                         pike.X += 1;
                         pike.Y += 1;
@@ -81,25 +84,25 @@ namespace River
         {
             foreach (Rudd rudd in listOfRudds)
             {
-                if (((rudd.X <= 98) && (rudd.X >= 2) &&
-                   (rudd.Y <= 98) && (rudd.Y >= 2) &&
-                   (rudd.Z <= 98) && (rudd.Z >= 2)))
+                if (((rudd.X <= riverSize- maxSpeedOfRudd) && (rudd.X >= maxSpeedOfRudd) &&
+                   (rudd.Y <= riverSize - maxSpeedOfRudd) && (rudd.Y >= maxSpeedOfRudd) &&
+                   (rudd.Z <= riverSize - maxSpeedOfRudd) && (rudd.Z >= maxSpeedOfRudd)))
                 {
-                    rudd.ChangeCoordinates(random);
+                    rudd.ChangeCoordinates();
                 }
                 else
                 {
-                    if (((rudd.X >= 98) ||
-                     (rudd.Y >= 98) ||
-                     (rudd.Z >= 98)))
+                    if (((rudd.X >= riverSize - maxSpeedOfRudd) ||
+                     (rudd.Y >= riverSize - maxSpeedOfRudd) ||
+                     (rudd.Z >= riverSize - maxSpeedOfRudd)))
                     {
                         rudd.X -= 1;
                         rudd.Y -= 1;
                         rudd.Z -= 1;
                     }
-                    if (((rudd.X <= 2) ||
-                     (rudd.Y <= 2) ||
-                     (rudd.Z <= 2)))
+                    if (((rudd.X <= maxSpeedOfRudd) ||
+                     (rudd.Y <= maxSpeedOfRudd) ||
+                     (rudd.Z <= maxSpeedOfRudd)))
                     {
                         rudd.X += 1;
                         rudd.Y += 1;
@@ -116,9 +119,9 @@ namespace River
                 double endWeight = 0;
                 foreach (Rudd rudd in listOfRudds)
                 {
-                    if ((pike.X < (rudd.X + 5)) && ((rudd.X - 5) < pike.X) &&
-                        (pike.Y < (rudd.Y + 5)) && ((rudd.Y - 5) < pike.Y) &&
-                        (pike.Z < (rudd.Z + 5)) && ((rudd.Z - 5) < pike.Z))
+                    if ((pike.X < (rudd.X + maxSpeedOfPike)) && ((rudd.X - maxSpeedOfPike) < pike.X) &&
+                        (pike.Y < (rudd.Y + maxSpeedOfPike)) && ((rudd.Y - maxSpeedOfPike) < pike.Y) &&
+                        (pike.Z < (rudd.Z + maxSpeedOfPike)) && ((rudd.Z - maxSpeedOfPike) < pike.Z))
                     {
                         pike.Weight(0.25);
                         endWeight = +1;
@@ -145,57 +148,43 @@ namespace River
                 {
                     if (rudd != otherRudd)
                     {
-                        if ((rudd.X < (otherRudd.X + 2)) && ((otherRudd.X - 2) < rudd.X) &&
-                        (rudd.Y < (otherRudd.Y + 2)) && ((otherRudd.Y - 2) < rudd.Y) &&
-                        (rudd.Z < (otherRudd.Z + 2)) && ((otherRudd.Z - 2) < rudd.Z))
+                        if ((rudd.X < (otherRudd.X + maxSpeedOfRudd)) && ((otherRudd.X - maxSpeedOfRudd) < rudd.X) &&
+                        (rudd.Y < (otherRudd.Y + maxSpeedOfRudd)) && ((otherRudd.Y - maxSpeedOfRudd) < rudd.Y) &&
+                        (rudd.Z < (otherRudd.Z + maxSpeedOfRudd)) && ((otherRudd.Z - maxSpeedOfRudd) < rudd.Z))
                         {
-                            ToAddListOfRudds.Add(new Rudd(random));
+                            ToAddListOfRudds.Add(new Rudd());
                         }
-                        else
-                        {
-                            ToDelListOfRudds.Add(rudd);
-                        }
-
                     }
-     
-                }   
+                }
             }
+            ToDelListOfRudds.Add(listOfRudds[Random.Next(0,listOfRudds.Count)]);
         }
 
         public void UpdateFishesInLists()
         {
             foreach (Rudd rudd in ToDelListOfRudds)
-            {
-                foreach (Rudd realRudd in listOfRudds)
-                if (rudd == realRudd)
                     {
-                        listOfRudds.Remove(realRudd);
+                        listOfRudds.Remove(rudd);
                         Console.WriteLine("Rudd is died");
-                        Console.WriteLine($"Total rudds:{listOfRudds.Count}");
                     }
-            }
             ToDelListOfRudds.Clear();
+            Console.WriteLine($"Total rudds:{listOfRudds.Count}");
 
             foreach (Pike pike in ToDelListOfPikes)
             {
-                foreach (Pike realPike in listOfPikes)
-                    if (pike == realPike)
-                    {
-                        listOfPikes.Remove(realPike);
-                        Console.WriteLine("Pike is died");
-                        Console.WriteLine($"Total pikes:{listOfPikes.Count}");
-                    }
+                        listOfPikes.Remove(pike);
+                        Console.WriteLine("Pike is died");       
             }
             ToDelListOfPikes.Clear();
+            Console.WriteLine($"Total pikes:{listOfPikes.Count}");
 
             foreach (Rudd rudd in ToAddListOfRudds)
             {
                 listOfRudds.Add(rudd);
-                Console.WriteLine("Rudd was born");
-                Console.WriteLine($"Total rudds:{listOfRudds.Count}");
-                    
+                Console.WriteLine("Rudd was born");     
             }
             ToAddListOfRudds.Clear();
+            Console.WriteLine($"Total rudds:{listOfRudds.Count}");
         }
     
     }
