@@ -8,14 +8,10 @@ namespace River
 {
     class Pike : Fish
     {
-
-
         public double Size { get; set; }
-        
-
         public double Weight(double size)
         {
-           Size += size;
+            Size += size;
             return Size;
         }
 

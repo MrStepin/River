@@ -13,24 +13,31 @@ namespace River
         {
             River river = new River();
 
+            Console.WriteLine("Enter size of river:");
+            int riverSize = Convert.ToInt32(Console.ReadLine());
+            int fish = 0;
+            int otherFish = 0;
+
             river.CreateFishs();
 
             int qtyOfPikes = river.listOfPikes.Count;
             int qtyOfRudds = river.listOfRudds.Count;
 
-            river.StartPositionOfPikes();
-
-            river.StartPositionOfRudds();
+            river.StartPositionOfPikes(riverSize);
+            river.StartPositionOfRudds(riverSize);
 
             while ((qtyOfPikes > 0) && (qtyOfRudds > 0))
             {
                 Thread.Sleep(500);
 
-                river.ChangeCoordinatesOfPikes();
-                river.ChangeCoordinatesOfRudds();
+                river.ConditionForChangingCoordinates(fish, riverSize);
+                river.ConditionForLifeOfFished(fish, otherFish, riverSize);
+
+                river.ChangeCoordinatesOfPikes(riverSize);
+                river.ChangeCoordinatesOfRudds(riverSize);
                 
-                river.LifeOfPikes();
-                river.LifeOfRudds();
+                river.LifeOfPikes(riverSize);
+                river.LifeOfRudds(riverSize);
                 river.UpdateFishesInLists();
 
                 qtyOfPikes = river.listOfPikes.Count;
