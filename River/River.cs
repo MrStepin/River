@@ -16,8 +16,8 @@ namespace River
         private Random Random = new Random();
         Rudd newRudd = new Rudd();
 
-        private int _maxSpeedOfPike = 5;
-        private int _maxSpeedOfRudd = 2;
+        public int MaxSpeedOfPike = 5;
+        public int MaxSpeedOfRudd = 2;
 
         public void CreateFishs()
         {
@@ -45,40 +45,40 @@ namespace River
             }
         }
 
-        public bool ConditionForChangingCoordinates(int fish, int riverSize)
+        public bool ConditionForChangingCoordinates(int fish, int riverSize, int _maxSpeed)
         {
-            return (fish <= (riverSize - _maxSpeedOfPike)) && (fish >= _maxSpeedOfPike);
+            return (fish <= (riverSize - _maxSpeed)) && (fish >= _maxSpeed);
         }
 
-        public bool ConditionForLifeOfFished(int fish, int otherFish, int riverSize)
+        public bool ConditionForLifeOfFished(int fish, int otherFish, int riverSize, int _maxSpeed)
         {
-            return (fish < (otherFish + _maxSpeedOfPike)) && ((otherFish - _maxSpeedOfPike) < fish);
+            return (fish < (otherFish + _maxSpeed)) && ((otherFish - _maxSpeed) < fish);
 
         }
 
-        public void ChangeCoordinatesOfFishes<T>(List<T> list, int riverSize) where T : Fish
+        public void ChangeCoordinatesOfFishes<T>(List<T> list, int riverSize, int _maxSpeed) where T : Fish
         {
             foreach (T fish in list)
             {
-                if (ConditionForChangingCoordinates(fish.X, riverSize) &&
-                    ConditionForChangingCoordinates(fish.Y, riverSize) &&
-                    ConditionForChangingCoordinates(fish.Z, riverSize))
+                if (ConditionForChangingCoordinates(fish.X, riverSize, _maxSpeed) &&
+                    ConditionForChangingCoordinates(fish.Y, riverSize, _maxSpeed) &&
+                    ConditionForChangingCoordinates(fish.Z, riverSize, _maxSpeed))
                 {
                     fish.ChangeCoordinates();
                 }
                 else
                 {
-                    if (((fish.X >= (riverSize - _maxSpeedOfPike)) ||
-                     (fish.Y >= (riverSize - _maxSpeedOfPike)) ||
-                     (fish.Z >= (riverSize - _maxSpeedOfPike))))
+                    if (((fish.X >= (riverSize - _maxSpeed)) ||
+                     (fish.Y >= (riverSize - _maxSpeed)) ||
+                     (fish.Z >= (riverSize - _maxSpeed))))
                     {
                         fish.X -= 1;
                         fish.Y -= 1;
                         fish.Z -= 1;
                     }
-                    if (((fish.X <= _maxSpeedOfPike) ||
-                     (fish.Y <= _maxSpeedOfPike) ||
-                     (fish.Z <= _maxSpeedOfPike)))
+                    if (((fish.X <= _maxSpeed) ||
+                     (fish.Y <= _maxSpeed) ||
+                     (fish.Z <= _maxSpeed)))
                     {
                         fish.Y += 1;
                         fish.Z += 1;
@@ -96,9 +96,9 @@ namespace River
                 double endWeight = 0;
                 foreach (Rudd rudd in listOfRudds)
                 {
-                    if (ConditionForLifeOfFished(pike.X, rudd.X, riverSize) &&
-                        ConditionForLifeOfFished(pike.Y, rudd.Y, riverSize) &&
-                        ConditionForLifeOfFished(pike.Z, rudd.Z, riverSize))
+                    if (ConditionForLifeOfFished(pike.X, rudd.X, riverSize, MaxSpeedOfPike) &&
+                        ConditionForLifeOfFished(pike.Y, rudd.Y, riverSize, MaxSpeedOfPike) &&
+                        ConditionForLifeOfFished(pike.Z, rudd.Z, riverSize, MaxSpeedOfPike))
                     {
                         pike.Weight(0.25);
                         endWeight = +1;
@@ -119,25 +119,23 @@ namespace River
 
         public void LifeOfRudds(int riverSize)
         {
-            newRudd.ChangeCoordinates();
             foreach (Rudd rudd in listOfRudds)
             {
                 foreach (Rudd otherRudd in listOfRudds)
                 {
                     if (rudd != otherRudd)
                     {
-                        if (ConditionForLifeOfFished(rudd.X, otherRudd.X, riverSize) &&
-                            ConditionForLifeOfFished(rudd.Y, otherRudd.Y, riverSize) &&
-                            ConditionForLifeOfFished(rudd.Z, otherRudd.Z, riverSize))
+                        if (ConditionForLifeOfFished(rudd.X, otherRudd.X, riverSize, MaxSpeedOfRudd) &&
+                            ConditionForLifeOfFished(rudd.Y, otherRudd.Y, riverSize, MaxSpeedOfRudd) &&
+                            ConditionForLifeOfFished(rudd.Z, otherRudd.Z, riverSize, MaxSpeedOfRudd))
                         {
+                            newRudd.ChangeCoordinates();
                             toAddListOfRudds.Add(newRudd);
                         }
-                        continue;
                     }
-                    continue;
                 }
             }
-            toDelListOfRudds.Add(listOfRudds[Random.Next(0,listOfRudds.Count)]);
+            toDelListOfRudds.Add(listOfRudds[Random.Next(0,(listOfRudds.Count))]);
         }
 
         public void UpdateFishesInLists<T>(List<T> list, List<T> listOfFishesToDel, string name) where T:Fish

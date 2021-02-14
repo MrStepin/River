@@ -17,6 +17,7 @@ namespace River
             int riverSize = Convert.ToInt32(Console.ReadLine());
             int fish = 0;
             int otherFish = 0;
+            int maxSpeed = 0;
 
             river.CreateFishs();
 
@@ -30,11 +31,11 @@ namespace River
             {
                 Thread.Sleep(500);
 
-                river.ConditionForChangingCoordinates(fish, riverSize);
-                river.ConditionForLifeOfFished(fish, otherFish, riverSize);
+                river.ConditionForChangingCoordinates(fish, riverSize, maxSpeed);
+                river.ConditionForLifeOfFished(fish, otherFish, riverSize, maxSpeed);
 
-                river.ChangeCoordinatesOfFishes(river.listOfPikes, riverSize);
-                river.ChangeCoordinatesOfFishes(river.listOfRudds, riverSize);
+                river.ChangeCoordinatesOfFishes(river.listOfPikes, riverSize, river.MaxSpeedOfPike);
+                river.ChangeCoordinatesOfFishes(river.listOfRudds, riverSize, river.MaxSpeedOfRudd);
 
                 river.LifeOfPikes(riverSize);
                 river.LifeOfRudds(riverSize);
