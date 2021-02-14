@@ -30,8 +30,6 @@ namespace River
             Y += Random.Next(-Step, Step + 1);
             Z += Random.Next(-Step, Step + 1);
             return (X, Y, Z);
-
         }
-
     }
 }

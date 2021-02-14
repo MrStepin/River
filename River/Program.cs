@@ -33,12 +33,14 @@ namespace River
                 river.ConditionForChangingCoordinates(fish, riverSize);
                 river.ConditionForLifeOfFished(fish, otherFish, riverSize);
 
-                river.ChangeCoordinatesOfPikes(riverSize);
-                river.ChangeCoordinatesOfRudds(riverSize);
-                
+                river.ChangeCoordinatesOfFishes(river.listOfPikes, riverSize);
+                river.ChangeCoordinatesOfFishes(river.listOfRudds, riverSize);
+
                 river.LifeOfPikes(riverSize);
                 river.LifeOfRudds(riverSize);
-                river.UpdateFishesInLists();
+                river.UpdateFishesInLists(river.listOfPikes, river.toDelListOfPikes, "pike");
+                river.UpdateFishesInLists(river.listOfRudds, river.toDelListOfRudds, "rudd");
+                river.BorningOfRudds();
 
                 qtyOfPikes = river.listOfPikes.Count;
                 qtyOfRudds = river.listOfRudds.Count;
