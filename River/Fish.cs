@@ -13,11 +13,10 @@ namespace River
         public int X { get; set; }
         public int Y { get; set; }
         public int Z { get; set; }
-        public int riverSize = 30;
 
         protected int Step;
 
-        public (int, int, int) StartCoordinates()
+        public (int, int, int) StartCoordinates(int riverSize)
         {
             X = Random.Next(0, riverSize);
             Y = Random.Next(0, riverSize);
@@ -31,8 +30,6 @@ namespace River
             Y += Random.Next(-Step, Step + 1);
             Z += Random.Next(-Step, Step + 1);
             return (X, Y, Z);
-
         }
-
     }
 }
